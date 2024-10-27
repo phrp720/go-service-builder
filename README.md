@@ -37,8 +37,8 @@ service := builder.
     ExecStartPost("/usr/bin/dummy-post").
     ExecStop("/usr/bin/dummy-stop").
     // Install
-    InstallRequiredBy("multi-user.target").
-    InstallWantedBy("multi-user.target").
+    RequiredBy("multi-user.target").
+    WantedBy("multi-user.target").
     Build()
 
 err := systemd.GenerateDefault(service, "dummy.service")

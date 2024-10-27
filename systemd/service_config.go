@@ -9,64 +9,118 @@ type ServiceConfig struct {
 	install Install
 }
 
-// [Unit]
+// Unit holds the [Unit] section options for a systemd service
 type Unit struct {
-	Description        string
-	Documentation      string
-	After              string
-	Wants              string
-	Requires           string
-	BindsTo            string
-	PartOf             string
-	Conflicts          string
-	Before             string
-	OnFailure          string
-	StartLimitInterval string
-	StartLimitBurst    int
+	Description              string
+	Documentation            string
+	Wants                    string
+	Requires                 string
+	Requisite                string
+	BindsTo                  string
+	PartOf                   string
+	Upholds                  string
+	Conflicts                string
+	Before                   string
+	After                    string
+	OnFailure                string
+	OnSuccess                string
+	PropagatesReloadTo       string
+	ReloadPropagatedFrom     string
+	PropagatesStopTo         string
+	StopPropagatedFrom       string
+	JoinsNamespaceOf         string
+	RequiresMountsFor        string
+	WantsMountsFor           string
+	OnSuccessJobMode         string
+	OnFailureJobMode         string
+	IgnoreOnIsolate          bool
+	StopWhenUnneeded         bool
+	RefuseManualStart        bool
+	RefuseManualStop         bool
+	AllowIsolate             bool
+	DefaultDependencies      bool
+	SurviveFinalKillSignal   bool
+	CollectMode              string
+	FailureAction            string
+	SuccessAction            string
+	FailureActionExitStatus  int
+	SuccessActionExitStatus  int
+	JobTimeoutSec            string
+	JobRunningTimeoutSec     string
+	JobTimeoutAction         string
+	JobTimeoutRebootArgument string
+	StartLimitIntervalSec    string
+	StartLimitBurst          int
+	StartLimitAction         string
+	RebootArgument           string
+	SourcePath               string
 }
 
-// [Service]
+// Service holds the [Service] section options for a systemd service
 type Service struct {
-	ServiceType            string
-	ExecStart              string
-	ExecStartPre           string
-	ExecStartPost          string
-	ExecReload             string
-	ExecStop               string
-	ExecStopPost           string
-	Restart                string
-	RestartSec             string
-	TimeoutSec             string
-	Environment            string
-	EnvironmentFile        string
-	WorkingDirectory       string
-	User                   string
-	Group                  string
-	PIDFile                string
-	StandardOutput         string
-	StandardError          string
-	SyslogIdentifier       string
-	SyslogFacility         string
-	SyslogLevel            string
-	SyslogLevelPrefix      bool
-	CapabilityBoundingSet  string
-	AmbientCapabilities    string
-	NoNewPrivileges        bool
-	PrivateTmp             bool
-	ProtectSystem          string
-	ProtectHome            string
-	ReadOnlyPaths          string
-	ReadWritePaths         string
-	InaccessiblePaths      string
-	RuntimeDirectory       string
-	StateDirectory         string
-	CacheDirectory         string
-	LogsDirectory          string
-	ConfigurationDirectory string
+	Type                        string
+	BusName                     string
+	ExecStart                   string
+	ExecStartPre                string
+	ExecStartPost               string
+	ExecReload                  string
+	ExecStop                    string
+	ExecStopPost                string
+	Restart                     string
+	RestartSec                  string
+	RemainAfterExit             bool
+	TimeoutSec                  string
+	Environment                 string
+	EnvironmentFile             string
+	WorkingDirectory            string
+	User                        string
+	Group                       string
+	PIDFile                     string
+	StandardOutput              string
+	StandardError               string
+	SyslogIdentifier            string
+	SyslogFacility              string
+	SyslogLevel                 string
+	SyslogLevelPrefix           bool
+	CapabilityBoundingSet       string
+	AmbientCapabilities         string
+	NoNewPrivileges             bool
+	NotifyAccess                string
+	PrivateTmp                  bool
+	ProtectSystem               string
+	ProtectHome                 string
+	ReadOnlyPaths               string
+	ReadWritePaths              string
+	InaccessiblePaths           string
+	RuntimeDirectory            string
+	StateDirectory              string
+	CacheDirectory              string
+	LogsDirectory               string
+	ConfigurationDirectory      string
+	ExitType                    string
+	GuessMainPID                bool
+	RestartMode                 string
+	SuccessExitStatus           string
+	RestartPreventExitStatus    string
+	RestartForceExitStatus      string
+	RootDirectoryStartOnly      bool
+	NonBlocking                 bool
+	Sockets                     string
+	FileDescriptorStoreMax      int
+	FileDescriptorStorePreserve string
+	USBFunctionDescriptors      string
+	USBFunctionStrings          string
+	OOMPolicy                   string
+	OpenFile                    string
+	ReloadSignal                string
 }
 
-// [Install]
+// Install holds the [Install] section options for a systemd service
 type Install struct {
-	InstallWantedBy   string
-	InstallRequiredBy string
+	WantedBy        string
+	RequiredBy      string
+	UpheldBy        string
+	Alias           string
+	Also            string
+	DefaultInstance string
 }
