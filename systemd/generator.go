@@ -18,6 +18,8 @@ func ToServiceFile(units map[string]interface{}, service map[string]interface{},
 			sb.WriteString(fmt.Sprintf("%s=%s\n", key, value))
 
 		}
+		sb.WriteString("\n")
+
 	}
 	if len(service) > 0 {
 		sb.WriteString("[Service]\n")
@@ -25,6 +27,7 @@ func ToServiceFile(units map[string]interface{}, service map[string]interface{},
 			sb.WriteString(fmt.Sprintf("%s=%s\n", key, value))
 
 		}
+		sb.WriteString("\n")
 	}
 	if len(install) > 0 {
 		sb.WriteString("[Install]\n")
