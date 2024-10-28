@@ -2,10 +2,10 @@ package systemd
 
 import (
 	"fmt"
+	"github.com/phrp720/service-builder/util"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"reflect"
 	"strings"
 )
 
@@ -40,29 +40,11 @@ func ToServiceFile(units map[string]interface{}, service map[string]interface{},
 	return sb.String()
 }
 
-func toMap(s interface{}) map[string]interface{} {
-	result := make(map[string]interface{})
-	v := reflect.ValueOf(s)
-	t := reflect.TypeOf(s)
-
-	for i := 0; i < v.NumField(); i++ {
-		field := v.Field(i)
-		fieldType := t.Field(i)
-		fieldName := fieldType.Name
-
-		// Check if the field is not a zero value
-		if !field.IsZero() {
-			result[fieldName] = field.Interface()
-		}
-	}
-	return result
-}
-
 // ToMaps converts the ServiceConfig struct to a map of unit, service and install
 func (s ServiceConfig) ToMaps() (map[string]interface{}, map[string]interface{}, map[string]interface{}) {
-	unitMap := toMap(s.unit)
-	serviceMap := toMap(s.service)
-	installMap := toMap(s.install)
+	unitMap := util.ToMap(s.unit)
+	serviceMap := util.ToMap(s.service)
+	installMap := util.ToMap(s.install)
 	return unitMap, serviceMap, installMap
 }
 
