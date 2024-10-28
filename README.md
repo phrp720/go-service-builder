@@ -42,7 +42,7 @@ service := builder.
     WantedBy("multi-user.target").
     Build()
 
-err := systemd.GenerateAndStart(service, "dummy.service",true)
+err := systemd.CreateServiceAndStart(service, "dummy.service",true)
 if err != nil {
     fmt.Print(err)
     return
