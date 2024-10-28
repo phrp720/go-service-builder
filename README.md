@@ -8,14 +8,15 @@ service-builder is a simple , customizable   Go library that  makes the creation
 go get github.com/phrp720/service-builder
 ```
 ## Features
-- Build and run systemd services
-- Build Windows services (coming soon)
+- Builds and run systemd services
+- Builds Windows services (coming soon)
 
 ## Usage
 
 ### systemd
 
-#### Example of Usage
+#### Example : Creating a systemd service
+Running the code below will create a systemd service file named `dummy.service` in the `/etc/systemd/system/` directory with the content defined in the `service` object. After creating the file, it enables and starts the service automatically.
 
 ```go
 builder := systemd.NewServiceBuilder()
@@ -41,13 +42,15 @@ service := builder.
     WantedBy("multi-user.target").
     Build()
 
-err := systemd.GenerateDefault(service, "dummy.service")
+err := systemd.GenerateAndStart(service, "dummy.service",true)
 if err != nil {
     fmt.Print(err)
     return
 }
 ```
 
+
+### `Generate` functions explained
 | Function           | Description                                                                                                        | Parameters                                      |
 |--------------------|--------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
 | `Generate`         | Writes the .service file content to the specified path.                                                            | `s ServiceConfig`, `path string`                |
