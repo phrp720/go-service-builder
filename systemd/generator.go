@@ -13,7 +13,7 @@ import (
 func ToServiceFile(units map[string]interface{}, service map[string]interface{}, install map[string]interface{}) string {
 	var sb strings.Builder
 	if len(units) > 0 {
-		sb.WriteString("[Units]\n")
+		sb.WriteString("[Unit]\n")
 		for key, value := range units {
 			sb.WriteString(fmt.Sprintf("%s=%s\n", key, value))
 
