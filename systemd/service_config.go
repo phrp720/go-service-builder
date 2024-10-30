@@ -2,11 +2,11 @@ package systemd
 
 // ServiceConfig is a struct that holds all the systemd service configuration
 type ServiceConfig struct {
-	unit Unit
+	Unit Unit
 
-	service Service
+	Service Service
 
-	install Install
+	Install Install
 }
 
 // Unit holds the [Unit] section options for a systemd service
