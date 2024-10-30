@@ -58,33 +58,22 @@ func CreateService(s ServiceConfig, path string) error {
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-// CreateDefaultService writes the .service file content to /etc/systemd/system/
-func CreateDefaultService(s ServiceConfig, file string) error {
-	content := CreateServiceFile(s.ToMaps())
-	path := "/etc/systemd/system/" + file
-	dir := filepath.Dir(path)
-	if err := os.MkdirAll(dir, 0755); err != nil {
-		return err
-	}
-	return os.WriteFile(path, []byte(content), 0644)
-}
-
 // CreateServiceAndStart writes the .service file content to /etc/systemd/system/ and starts the service
-func CreateServiceAndStart(s ServiceConfig, file string, enable bool) error {
-	if err := CreateDefaultService(s, file); err != nil {
+func CreateServiceAndStart(s ServiceConfig, path string, enable bool) error {
+	if err := CreateService(s, path); err != nil {
 		return err
 	}
 
 	if enable {
 		// Enable the service
-		if err := EnableService(file); err != nil {
+		if err := EnableService(path); err != nil {
 			fmt.Print(err, "\n")
 			return err
 		}
 	}
 
 	// Start the service
-	if err := StartService(file); err != nil {
+	if err := StartService(path); err != nil {
 		fmt.Print(err, "\n")
 		return err
 	}
