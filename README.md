@@ -15,8 +15,8 @@ go get github.com/phrp720/service-builder
 
 ### For Linux
 
-#### Example : Creating a systemd service
-Running the code below will create a systemd service file named `dummy.service` in the `/etc/systemd/system/` directory with the content defined in the `service` object. After creating the file, it enables and starts the service automatically.
+#### Example : Creating a systemd service 
+Running the code below will create a systemd service file named `dummy.service` in the `/etc/systemd/system/` directory with the content defined in the `service` object. After creating the file.We start the service with StartService function(the example below is a root service so you need to run your code project as superUser).
 
 ```go
 builder := systemd.NewServiceBuilder()
@@ -42,12 +42,12 @@ RequiredBy("multi-user.target").
 WantedBy("multi-user.target").
 Build()
 
-err := systemd.CreateService(service, "AbsolutePathWithService",false)
+err := systemd.CreateService(service, "/etc/systemd/system/dummy.service",true)
 if err != nil {
 fmt.Print(err)
 return
 }
-err := systemd.StartService("ServiceName",false)
+err := systemd.StartService("ServiceName",true)
 if err != nil {
 fmt.Print(err)
 return
