@@ -71,5 +71,5 @@ builder := nssm.NewServiceBuilder()
 ```
 > [!Warning]
 >
-> To create services, you must run your go project as an Administrator.
+> To create services in Windows, it is mandatory to  run the go project as an Administrator.
 
