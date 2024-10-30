@@ -26,15 +26,15 @@ func getNssm() string {
 
 // CreateService sets the service configuration using nssm.exe
 func CreateService(s ServiceConfig) error {
-	params := util.ToMap(s.parameters)
+	params := util.ToMap(s.Parameters)
 	nssm := getNssm()
-	cmd := exec.Command(nssm, "install", s.serviceName, s.parameters.AppDirectory)
+	cmd := exec.Command(nssm, "install", s.ServiceName, s.Parameters.AppDirectory)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to run:  %w", err)
 	}
 	// Set each variable for the service using nssm.exe
 	for key, value := range params {
-		cmd := exec.Command(nssm, "set", s.serviceName, key, fmt.Sprintf("%v", value))
+		cmd := exec.Command(nssm, "set", s.ServiceName, key, fmt.Sprintf("%v", value))
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {

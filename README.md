@@ -50,12 +50,12 @@ return
 ```
 
 
-### `Generate` functions explained
-| Function           | Description                                                                                                        | Parameters                                      |
-|--------------------|--------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
-| `Generate`         | Writes the .service file content to the specified path.                                                            | `s ServiceConfig`, `path string`                |
-| `GenerateDefault`  | Writes the .service file content to `/etc/systemd/system/`.                                                        | `s ServiceConfig`, `file string`                |
-| `GenerateAndStart` | Writes the .service file content to `/etc/systemd/system/` and starts the service. Optionally enables the service. | `s ServiceConfig`, `file string`, `enable bool` |
+### `Create` functions explained
+| Function                | Description                                                                                                        | Parameters                                      |
+|-------------------------|--------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| `CreateService`         | Writes the .service file content to the specified path.                                                            | `s ServiceConfig`, `path string`                |
+| `CreateDefaultService`  | Writes the .service file content to `/etc/systemd/system/`.                                                        | `s ServiceConfig`, `file string`                |
+| `CreateServiceAndStart` | Writes the .service file content to `/etc/systemd/system/` and starts the service. Optionally enables the service. | `s ServiceConfig`, `file string`, `enable bool` |
 
 
 ### For Windows
