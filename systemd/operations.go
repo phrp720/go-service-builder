@@ -58,73 +58,53 @@ func CreateService(s ServiceConfig, path string) error {
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-// CreateServiceAndStart writes the .service file content to /etc/systemd/system/ and starts the service
-func CreateServiceAndStart(s ServiceConfig, path string, enable bool, superUser bool) error {
-	if err := CreateService(s, path); err != nil {
-		return err
-	}
-
-	if enable {
-		// Enable the service
-		if err := EnableService(path, superUser); err != nil {
-			return err
-		}
-	}
-
-	// Start the service
-	if err := StartService(path, superUser); err != nil {
-		return err
-	}
-	return nil
-}
-
 // StartService enables the service
-func StartService(file string, superUser bool) error {
-	if err := systemdCommand("start", file, superUser); err != nil {
+func StartService(service string, superUser bool) error {
+	if err := systemdCommand("start", service, superUser); err != nil {
 		return err
 	}
 	return nil
 }
 
 // StopService stops the service
-func StopService(file string, superUser bool) error {
-	if err := systemdCommand("stop", file, superUser); err != nil {
+func StopService(service string, superUser bool) error {
+	if err := systemdCommand("stop", service, superUser); err != nil {
 		return err
 	}
 	return nil
 }
 
 // EnableService enables the service
-func EnableService(file string, superUser bool) error {
-	if err := systemdCommand("enable", file, superUser); err != nil {
+func EnableService(service string, superUser bool) error {
+	if err := systemdCommand("enable", service, superUser); err != nil {
 		return err
 	}
 	return nil
 }
 
 // DisableService disables the service
-func DisableService(file string, superUser bool) error {
-	if err := systemdCommand("disable", file, superUser); err != nil {
+func DisableService(service string, superUser bool) error {
+	if err := systemdCommand("disable", service, superUser); err != nil {
 		return err
 	}
 	return nil
 }
 
 // RestartService restarts the service
-func RestartService(file string, superUser bool) error {
-	if err := systemdCommand("restart", file, superUser); err != nil {
+func RestartService(service string, superUser bool) error {
+	if err := systemdCommand("restart", service, superUser); err != nil {
 		return err
 	}
 	return nil
 }
 
 // systemdCommand executes the systemctl command.If isSuperUser is true, it will run the command as sudo else as the current user
-func systemdCommand(command string, file string, isSuperUser bool) error {
+func systemdCommand(command string, service string, isSuperUser bool) error {
 	var cmd *exec.Cmd
 	if isSuperUser {
-		cmd = exec.Command("sudo", "systemctl", command, file)
+		cmd = exec.Command("sudo", "systemctl", command, service)
 	} else {
-		cmd = exec.Command("systemctl --user", command, file)
+		cmd = exec.Command("systemctl", "--user "+command, service)
 	}
 	if err := cmd.Run(); err != nil {
 		return err

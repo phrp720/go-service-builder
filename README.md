@@ -42,7 +42,12 @@ RequiredBy("multi-user.target").
 WantedBy("multi-user.target").
 Build()
 
-err := systemd.CreateServiceAndStart(service, "dummy.service",true)
+err := systemd.CreateService(service, "AbsolutePathWithService",false)
+if err != nil {
+fmt.Print(err)
+return
+}
+err := systemd.StartService("ServiceName",false)
 if err != nil {
 fmt.Print(err)
 return
