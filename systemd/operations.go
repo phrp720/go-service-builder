@@ -104,7 +104,7 @@ func systemdCommand(command string, service string, isSuperUser bool) error {
 	if isSuperUser {
 		cmd = exec.Command("sudo", "systemctl", command, service)
 	} else {
-		cmd = exec.Command("systemctl", "--user "+command, service)
+		cmd = exec.Command("systemctl", "--user", command, service)
 	}
 	if err := cmd.Run(); err != nil {
 		return err
