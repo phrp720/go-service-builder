@@ -60,13 +60,16 @@ return
 Running the code below will create a Windows service via nssm  with the content defined in the `service` object. After creating the service, we run the StartService function which starts the service automatically.
 
 ```go
-nssm.InitNssm("The_Place_Where_Nssm_Will_Be_Installed")
+err:=nssm.StartNssm("Folder_Where_Nssm_Will_Be_Temporary_Installed") // StartNssm downloads nssm and extracts it temporarily to the specified folder
+if err != nil {log.Print(err)}
 builder := nssm.NewServiceBuilder()
 	service := builder.ServiceName("serviceName").AppDirectory("C:\\Program Files\\Service_Folder").Application("appName").Build()
 	err := nssm.CreateService(service)
 	if err != nil {log.Print(err)}
 	err = nssm.StartService(service.ServiceName)
 	if err != nil {log.Print(err)}
+err=nssm.StopNssm() // StopNssm clears the temporary file created by nssm
+if err != nil {log.Print(err)}
 ```
 > [!Warning]
 >

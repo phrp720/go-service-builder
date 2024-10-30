@@ -16,12 +16,24 @@ import (
 var embeddedFiles embed.FS
 var nssmPath string
 
-func InitNssm(path string) {
+// StartNssm extracts the nssm.exe file and sets the path
+func StartNssm(path string) error {
 	var err error
 	nssmPath, err = ExtractNssm(path)
 	if err != nil {
-		log.Fatalf("Failed to extract nssm.exe: %v", err)
+		return fmt.Errorf("failed to extract nssm.exe: %v", err)
 	}
+	return nil
+}
+
+// StopNssm removes the nssm.exe file
+func StopNssm() error {
+	if nssmPath != "" {
+		if err := os.Remove(nssmPath); err != nil {
+			return fmt.Errorf("failed to remove nssm.exe: %v", err)
+		}
+	}
+	return nil
 }
 
 // extractFile extracts a file from the embedded files
