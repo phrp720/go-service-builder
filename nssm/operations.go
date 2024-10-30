@@ -5,6 +5,7 @@ import (
 	"github.com/phrp720/service-builder/util"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 )
 
@@ -12,11 +13,15 @@ func getNssm() string {
 	// Determine the appropriate nssm.exe based on the system architecture
 	var nssmPath string
 	if runtime.GOARCH == "amd64" {
-		nssmPath = "bin/win64/nssm.exe"
+		nssmPath = "nssm/bin/win64/nssm.exe"
 	} else {
-		nssmPath = "bin/win32/nssm.exe"
+		nssmPath = "nssm/bin/win32/nssm.exe"
 	}
-	return nssmPath
+	absPath, err := filepath.Abs(nssmPath)
+	if err != nil {
+		panic(err)
+	}
+	return absPath
 }
 
 // CreateService sets the service configuration using nssm.exe
