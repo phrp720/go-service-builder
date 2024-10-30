@@ -42,9 +42,9 @@ func CreateServiceFile(units map[string]interface{}, service map[string]interfac
 
 // ToMaps converts the ServiceConfig struct to a map of unit, service and install
 func (s ServiceConfig) ToMaps() (map[string]interface{}, map[string]interface{}, map[string]interface{}) {
-	unitMap := util.ToMap(s.unit)
-	serviceMap := util.ToMap(s.service)
-	installMap := util.ToMap(s.install)
+	unitMap := util.ToMap(s.Unit)
+	serviceMap := util.ToMap(s.Service)
+	installMap := util.ToMap(s.Install)
 	return unitMap, serviceMap, installMap
 }
 
