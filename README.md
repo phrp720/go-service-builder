@@ -21,31 +21,31 @@ Running the code below will create a systemd service file named `dummy.service` 
 ```go
 builder := systemd.NewServiceBuilder()
 service := builder.
-    // Unit
-    Description("Dummy Service").
-    Before("network.target").
-    After("network.target").
-    BindsTo("dummy.target").
-    Conflicts("shutdown.target").
-    Documentation("https://example.com").
-    OnFailure("reboot.target").
-    PartOf("multi-user.target").
-    Requires("network.target").
-    Wants("network-online.target").
-    // Service
-    ExecStart("/usr/bin/dummy").
-    ExecStartPre("/usr/bin/dummy-pre").
-    ExecStartPost("/usr/bin/dummy-post").
-    ExecStop("/usr/bin/dummy-stop").
-    // Install
-    RequiredBy("multi-user.target").
-    WantedBy("multi-user.target").
-    Build()
+// Unit
+Description("Dummy Service").
+Before("network.target").
+After("network.target").
+BindsTo("dummy.target").
+Conflicts("shutdown.target").
+Documentation("https://example.com").
+OnFailure("reboot.target").
+PartOf("multi-user.target").
+Requires("network.target").
+Wants("network-online.target").
+// Service
+ExecStart("/usr/bin/dummy").
+ExecStartPre("/usr/bin/dummy-pre").
+ExecStartPost("/usr/bin/dummy-post").
+ExecStop("/usr/bin/dummy-stop").
+// Install
+RequiredBy("multi-user.target").
+WantedBy("multi-user.target").
+Build()
 
 err := systemd.CreateServiceAndStart(service, "dummy.service",true)
 if err != nil {
-    fmt.Print(err)
-    return
+fmt.Print(err)
+return
 }
 ```
 
@@ -74,5 +74,4 @@ builder := nssm.NewServiceBuilder()
 > [!Warning]
 >
 > To create services, you must run your go project as an Administrator.
-
 
