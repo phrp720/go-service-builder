@@ -60,6 +60,7 @@ return
 Running the code below will create a Windows service via nssm  with the content defined in the `service` object. After creating the service, we run the StartService function which starts the service automatically.
 
 ```go
+nssm.InitNssm("The_Place_Where_Nssm_Will_Be_Installed")
 builder := nssm.NewServiceBuilder()
 	service := builder.ServiceName("serviceName").AppDirectory("C:\\Program Files\\Service_Folder").Application("appName").Build()
 	err := nssm.CreateService(service)

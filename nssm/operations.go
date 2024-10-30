@@ -1,40 +1,70 @@
 package nssm
 
 import (
+	"embed"
 	"fmt"
 	"github.com/phrp720/service-builder/util"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 )
 
-func getNssm() string {
-	// Determine the appropriate nssm.exe based on the system architecture
-	var nssmPath string
-	if runtime.GOARCH == "amd64" {
-		nssmPath = "nssm/bin/win64/nssm.exe"
-	} else {
-		nssmPath = "nssm/bin/win32/nssm.exe"
-	}
-	absPath, err := filepath.Abs(nssmPath)
+//go:embed bin/win64/nssm.exe
+//go:embed bin/win32/nssm.exe
+var embeddedFiles embed.FS
+var nssmPath string
+
+func InitNssm(path string) {
+	var err error
+	nssmPath, err = ExtractNssm(path)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to extract nssm.exe: %v", err)
 	}
-	return absPath
+}
+
+// extractFile extracts a file from the embedded files
+func extractFile(embeddedPath, outputPath string) error {
+	data, err := embeddedFiles.ReadFile(embeddedPath)
+	if err != nil {
+		return err
+	}
+	dir := filepath.Dir(outputPath)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return err
+	}
+	return os.WriteFile(outputPath, data, 0755)
+}
+
+// ExtractNssm extracts the nssm.exe file from the embedded files
+func ExtractNssm(outputDir string) (string, error) {
+	var embeddedPath string
+	if runtime.GOARCH == "amd64" {
+		embeddedPath = "bin/win64/nssm.exe"
+	} else {
+		embeddedPath = "bin/win32/nssm.exe"
+	}
+	outputPath := filepath.Join(outputDir, "nssm.exe")
+	if err := extractFile(embeddedPath, outputPath); err != nil {
+		return "", err
+	}
+	return outputPath, nil
 }
 
 // CreateService sets the service configuration using nssm.exe
 func CreateService(s ServiceConfig) error {
+	if nssmPath == "" {
+		log.Fatalf("nssm isn't initialized")
+	}
 	params := util.ToMap(s.Parameters)
-	nssm := getNssm()
-	cmd := exec.Command(nssm, "install", s.ServiceName, s.Parameters.AppDirectory)
+	cmd := exec.Command(nssmPath, "install", s.ServiceName, s.Parameters.AppDirectory)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to run:  %w", err)
 	}
 	// Set each variable for the service using nssm.exe
 	for key, value := range params {
-		cmd := exec.Command(nssm, "set", s.ServiceName, key, fmt.Sprintf("%v", value))
+		cmd := exec.Command(nssmPath, "set", s.ServiceName, key, fmt.Sprintf("%v", value))
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
@@ -47,7 +77,10 @@ func CreateService(s ServiceConfig) error {
 
 // StartService starts the service using nssm.exe
 func StartService(service string) error {
-	cmd := exec.Command(getNssm(), "start", service)
+	if nssmPath == "" {
+		log.Fatalf("nssm isn't initialized")
+	}
+	cmd := exec.Command(nssmPath, "start", service)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -58,7 +91,7 @@ func StartService(service string) error {
 
 // StopService stops the service using nssm.exe
 func StopService(service string) error {
-	cmd := exec.Command(getNssm(), "stop", service)
+	cmd := exec.Command(nssmPath, "stop", service)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -69,7 +102,10 @@ func StopService(service string) error {
 
 // RemoveService removes the service using nssm.exe
 func RemoveService(service string) error {
-	cmd := exec.Command(getNssm(), "remove", service, "confirm")
+	if nssmPath == "" {
+		log.Fatalf("nssm isn't initialized")
+	}
+	cmd := exec.Command(nssmPath, "remove", service, "confirm")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -80,7 +116,10 @@ func RemoveService(service string) error {
 
 // RestartService restarts the service
 func RestartService(service string) error {
-	cmd := exec.Command(getNssm(), "stop", service)
+	if nssmPath == "" {
+		log.Fatalf("nssm isn't initialized")
+	}
+	cmd := exec.Command(nssmPath, "stop", service)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -89,7 +128,10 @@ func RestartService(service string) error {
 	return nil
 }
 func PauseService(service string) error {
-	cmd := exec.Command(getNssm(), "pause", service)
+	if nssmPath == "" {
+		log.Fatalf("nssm isn't initialized")
+	}
+	cmd := exec.Command(nssmPath, "pause", service)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -99,7 +141,10 @@ func PauseService(service string) error {
 }
 
 func ContinueService(service string) error {
-	cmd := exec.Command(getNssm(), "continue", service)
+	if nssmPath == "" {
+		log.Fatalf("nssm isn't initialized")
+	}
+	cmd := exec.Command(nssmPath, "continue", service)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -109,7 +154,10 @@ func ContinueService(service string) error {
 }
 
 func RotateService(service string) error {
-	cmd := exec.Command(getNssm(), "rotate", service)
+	if nssmPath == "" {
+		log.Fatalf("nssm isn't initialized")
+	}
+	cmd := exec.Command(nssmPath, "rotate", service)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
