@@ -57,8 +57,22 @@ if err != nil {
 | `GenerateDefault`  | Writes the .service file content to `/etc/systemd/system/`.                                                        | `s ServiceConfig`, `file string`                |
 | `GenerateAndStart` | Writes the .service file content to `/etc/systemd/system/` and starts the service. Optionally enables the service. | `s ServiceConfig`, `file string`, `enable bool` |
 
+
+### For Windows
+
+#### Example: Creating a Windows service
+Running the code below will create a Windows service via nssm  with the content defined in the `service` object. After creating the service, we run the StartService function which starts the service automatically.
+
+```go
+builder := nssm.NewServiceBuilder()
+	service := builder.ServiceName("serviceName").AppDirectory("C:\\Program Files\\Service_Folder").Application("appName").Build()
+	err := nssm.CreateService(service)
+	if err != nil {log.Print(err)}
+	err = nssm.StartService(service.ServiceName)
+	if err != nil {log.Print(err)}
+```
 > [!Warning]
 >
-> To create services, you must run your go project as a superuser.
+> To create services, you must run your go project as an Administrator.
 
 
