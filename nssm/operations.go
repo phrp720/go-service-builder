@@ -18,14 +18,23 @@ var nssmPath string
 
 // InitNssm extracts the nssm.exe file and sets the path
 func InitNssm(path string) error {
-	var err error
-	nssmPath, err = ExtractNssm(path)
-	if err != nil {
-		return fmt.Errorf("failed to extract nssm.exe: %v", err)
+	nssmPath = filepath.Join(path, "nssm.exe")
+	if _, err := os.Stat(nssmPath); err == nil {
+		// File exists, return the path
+		return nil
+	} else if os.IsNotExist(err) {
+		// File does not exist, proceed with extraction
+		var extractErr error
+		nssmPath, extractErr = ExtractNssm(path)
+		if extractErr != nil {
+			return fmt.Errorf("failed to extract nssm.exe: %v", extractErr)
+		}
+	} else {
+		// Other error
+		return fmt.Errorf("failed to check nssm.exe: %v", err)
 	}
 	return nil
 }
-
 
 // extractFile extracts a file from the embedded files
 func extractFile(embeddedPath, outputPath string) error {
