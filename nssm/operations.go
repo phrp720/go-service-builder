@@ -36,6 +36,11 @@ func InitNssm(path string) error {
 	return nil
 }
 
+// GetNssmPath returns the path to the nssm.exe file
+func GetNssmPath() string {
+	return nssmPath
+}
+
 // extractFile extracts a file from the embedded files
 func extractFile(embeddedPath, outputPath string) error {
 	data, err := embeddedFiles.ReadFile(embeddedPath)
