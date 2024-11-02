@@ -58,14 +58,15 @@ return
 
 #### Example: Creating a Windows service
 Running the code below will create a Windows service via nssm  with the content defined in the `service` object. After creating the service, we run the StartService function which starts the service automatically.
+Then nssm that we initiated will be responsible for the service.
 
 ```go
-err:=nssm.InitNssm("Folder_Where_Nssm_Will_Be_Temporary_Installed") // InitNssm downloads nssm and extracts it  to the specified folder
+err:=nssm.InitNssm("Folder_Where_Nssm_Will_Be_Installed") // InitNssm downloads nssm and extracts it  to the specified folder
 if err != nil {log.Print(err)}
 builder := nssm.NewServiceBuilder()
-service := builder.ServiceName("serviceName").
+service := builder.ServiceName("dummyService").
 	AppDirectory("C:\\Program Files\\Service_Folder").
-	Application("appName").
+	Application("C:\\Program Files\\Service_Folder/dummyService.exe").
 	Build()
 err := nssm.CreateService(service)
 if err != nil {log.Print(err)}
