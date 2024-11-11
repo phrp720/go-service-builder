@@ -3,7 +3,7 @@ package nssm
 import (
 	"embed"
 	"fmt"
-	"github.com/phrp720/service-builder/util"
+	"github.com/phrp720/go-service-builder/util"
 	"log"
 	"os"
 	"os/exec"

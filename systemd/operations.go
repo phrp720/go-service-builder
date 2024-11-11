@@ -2,7 +2,7 @@ package systemd
 
 import (
 	"fmt"
-	"github.com/phrp720/service-builder/util"
+	"github.com/phrp720/go-service-builder/util"
 	"os"
 	"os/exec"
 	"path/filepath"

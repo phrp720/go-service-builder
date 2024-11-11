@@ -1,3 +1,3 @@
-module github.com/phrp720/service-builder
+module github.com/phrp720/go-service-builder
 
 go 1.23.2
