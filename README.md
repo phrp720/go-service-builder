@@ -1,6 +1,6 @@
 # go-service-builder
 
-go-service-builder is a simple , customizable   Go library that  makes the creation of Linux and Windows services easier.
+`go-service-builder` is a simple , customizable   Go library that  makes the creation of Linux and Windows services easier.
 
 ## Installation
 
