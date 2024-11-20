@@ -81,7 +81,7 @@ func CreateService(s ServiceConfig) error {
 	}
 	// Set each variable for the service using nssm.exe
 	for key, value := range params {
-		cmd := exec.Command(nssmPath, "set", s.ServiceName, key, fmt.Sprintf("%v", value))
+		cmd = exec.Command(nssmPath, "set", s.ServiceName, key, fmt.Sprintf("%v", value))
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
@@ -136,7 +136,7 @@ func RestartService(service string) error {
 	if nssmPath == "" {
 		log.Fatalf("nssm isn't initialized")
 	}
-	cmd := exec.Command(nssmPath, "stop", service)
+	cmd := exec.Command(nssmPath, "restart", service)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
