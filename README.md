@@ -1,6 +1,6 @@
 # go-service-builder
 
-`go-service-builder` is a simple , customizable   Go library that  makes the creation of Linux and Windows services easier.
+`go-service-builder` is a lightweight and customizable Go library designed to simplify the creation and management of Linux and Windows services.
 
 ## Installation
 
@@ -8,15 +8,14 @@
 go get github.com/phrp720/go-service-builder
 ```
 ## Features
-- Builds and run Linux services with systemd
-- Builds and run Windows services with nssm
+- **Linux Support:** Create and manage services with `systemd`.
+- **Windows Support:** Create and manage services using `nssm`.
 
 ## Usage
 
-### For Linux
+### For Linux: Creating a systemd Service 
 
-#### Example : Creating a systemd service 
-Running the code below will generate and start a systemd service  named `dummy.service` in the `/etc/systemd/system/`.
+The following example demonstrates how to create and start a systemd service named `dummy.service` in `/etc/systemd/system/`.
 
 ```go
 builder := systemd.NewServiceBuilder()
@@ -48,11 +47,9 @@ return
 }
 ```
 
-### For Windows
+### For Windows: Creating a Service with NSSM
 
-#### Example: Creating a Windows service
-Running the code below will create and start a Windows service via [nssm](https://nssm.cc/).
-Then nssm that we initiated will be responsible for the health of the service.
+The example below illustrates how to create and start a Windows service using [nssm](https://nssm.cc/). NSSM will ensure the service's health.
 
 ```go
 err:=nssm.InitNssm("Folder_Where_Nssm_Will_Be") // InitNssm downloads nssm and extracts it  to the specified folder
@@ -69,5 +66,7 @@ if err != nil {log.Print(err)}
 ```
 > [!Warning]
 >
-> To create services in Windows or in places where root privileges are needed, it is mandatory to  run your project as an Administrator.
+> To create services on Windows or to write services in restricted directories on Linux, root or Administrator privileges are required.
 
+## Contributing
+Contributions, issues, and feature requests are welcome! Feel free to check out the repository and submit a pull request or report any issues.
